@@ -41,7 +41,7 @@ export function DataTest() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
   const directionsToRestStop =
-    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyDdvIYGkXBiOBdN01vPypfSbkFyWcU5jNY&origin=" +
+    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
     curr.latitude +
     "," +
     curr.longitude +
