@@ -73,7 +73,8 @@ export function DataTest() {
     "," +
     curr.longitude +
     "&destination=reststop";
-
+const acc = new DeviceMotionEvent("devicemotion");
+const accleration2 = acc.accelerationIncludingGravity;
 
   return (
     <div>
@@ -85,6 +86,7 @@ export function DataTest() {
       </div>
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
+      <div>Acceleration 2: {accleration2}</div>
       <div>Speed Limit: {roadSpeedLimit}</div>
       <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
       <iframe
