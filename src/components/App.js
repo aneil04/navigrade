@@ -1,5 +1,5 @@
 import * as faceapi from "face-api.js";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [stop, setStop] = useState(false);
@@ -11,7 +11,7 @@ function App() {
   const videoWidth = 640;
   const canvasRef = React.useRef();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = process.env.PUBLIC_URL + "/models";
 
@@ -39,8 +39,28 @@ function App() {
       });
   };
 
-  let lookLeft = new Boolean(false);
-  let lookRight = new Boolean(false);
+  let lookLeft = false;
+  let lookRight = false;
+  let lookedDown = false;
+
+  let midLine = 0;
+  let chinLine = 0;
+
+  let polls = 1;
+  const maxPolls = 20;
+  let calcAvg = false;
+  let calibration = true;
+
+  function calibrate() {
+    midLine = 0;
+    chinLine = 0;
+
+    polls = 1;
+    calcAvg = false;
+    calibration = true;
+
+    console.log("calibrating");
+  }
 
   const handleVideoOnPlay = () => {
     setInterval(async () => {
@@ -55,7 +75,6 @@ function App() {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        // const detections = (await
         faceapi.detectFaceLandmarks(
           videoRef.current,
           new faceapi.FaceLandmark68Net()
@@ -74,15 +93,40 @@ function App() {
         if (resizedDetections[0]) {
           const landmarks = resizedDetections[0].landmarks.positions;
 
-          const dist = landmarks[31].x - landmarks[3].x;
-          console.log(dist);
+          if (calibration) {
+            midLine += landmarks[31].x
+            chinLine += landmarks[9].y
+            polls++;
 
-          if (dist > 80) {
-            lookLeft = true;
+            if (polls > maxPolls) {
+              calibration = false;
+            }
+          } else if (!calcAvg) {
+            midLine /= maxPolls;
+            chinLine /= maxPolls;
+
+            calcAvg = true;
           }
-          if (dist < 20) {
-            lookRight = true;
+
+          if (calcAvg) {
+            if (landmarks[31].x < midLine - 30) {
+              lookLeft = true;
+            }
+
+            if (landmarks[31].x > midLine + 30) {
+              lookRight = true;
+            }
+
+            if (landmarks[9].y > chinLine + 80) {
+              lookedDown = true;
+            }
           }
+
+          if (lookedDown) {
+            alert("You looked down!");
+            lookedDown = false;
+          }
+
           if (lookLeft && lookRight) {
             alert("You looked both ways!");
             lookLeft = false;
@@ -172,6 +216,7 @@ function App() {
       ) : (
         <></>
       )}
+      <button onClick={() => { calibrate() }}>Calibrate</button>
     </div>
   );
 }
