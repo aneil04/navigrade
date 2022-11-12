@@ -54,8 +54,22 @@ function App() {
         const detections = await faceapi.detectFaceLandmarks(videoRef.current, new faceapi.TinyFaceDetectorOptions());
 
         const leftEye = detections.getLeftEye();
+        const jawOutline = detections.getJawOutline();
 
-        console.log("x: " + leftEye[1].x + " y: " + leftEye[1].y)
+        // console.log("x: " + leftEye[1].x + " y: " + leftEye[1].y)
+
+        const dist = faceapi.euclideanDistance([leftEye[1].x, leftEye[1].y], [jawOutline[1].x, jawOutline[1].y])
+        console.log(dist);
+
+        const box = { x: 50, y: 50, width: 100, height: 100 }
+
+        // see DrawBoxOptions below
+        const drawOptions = {
+          label: 'Hello I am a box!',
+          lineWidth: 2
+        }
+        const drawBox = new faceapi.draw.DrawBox(box, drawOptions)
+        drawBox.draw(document.getElementById('canvas'))
       }
     }, 1000)
   }
@@ -86,7 +100,7 @@ function App() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
                 <video ref={videoRef} height={videoHeight} width={videoWidth} onPlay={handleVideoOnPlay} style={{ borderRadius: '10px' }} />
-                <canvas ref={canvasRef} style={{ position: 'absolute' }} />
+                <canvas ref={canvasRef} id="canvas" style={{ position: 'absolute' }} />
               </div>
             </div>
             :
