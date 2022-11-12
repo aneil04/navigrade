@@ -40,6 +40,12 @@ export function DataTest() {
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
+  const directionsToRestStop =
+    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyDdvIYGkXBiOBdN01vPypfSbkFyWcU5jNY&origin=" +
+    curr.latitude +
+    "," +
+    curr.longitude +
+    "&destination=reststop";
 
   let roadSpeedLimit = 0;
   fetch(
@@ -79,6 +85,10 @@ export function DataTest() {
       <div>Acceleration: {latestAcc}</div>
       <div>Speed Limit: {roadSpeedLimit}</div>
       <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
+      <iframe
+        src={directionsToRestStop}
+        title="W3Schools Free Online Web Tutorials"
+      ></iframe>
     </div>
   );
 }
