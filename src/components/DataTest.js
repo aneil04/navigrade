@@ -40,6 +40,7 @@ export function DataTest() {
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
+  const directionsToRestStop = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyDdvIYGkXBiOBdN01vPypfSbkFyWcU5jNY&origin=" + curr.latitude + "," + curr.longitude+ "&destination=reststop";
 
   return (
     <div>
@@ -51,6 +52,7 @@ export function DataTest() {
       </div>
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
+      <iframe src={directionsToRestStop} title="W3Schools Free Online Web Tutorials"></iframe>
     </div>
   );
 }
