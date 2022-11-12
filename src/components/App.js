@@ -41,8 +41,11 @@ function App() {
 
   let lookLeft = false;
   let lookRight = false;
+  let lookedDown = false;
 
   let midLine = 0;
+  let chinLine = 0;
+
   let polls = 1;
   const maxPolls = 20;
   let calcAvg = false;
@@ -50,6 +53,8 @@ function App() {
 
   function calibrate() {
     midLine = 0;
+    chinLine = 0;
+
     polls = 1;
     calcAvg = false;
     calibration = true;
@@ -90,6 +95,7 @@ function App() {
 
           if (calibration) {
             midLine += landmarks[31].x
+            chinLine += landmarks[9].y
             polls++;
 
             if (polls > maxPolls) {
@@ -97,16 +103,28 @@ function App() {
             }
           } else if (!calcAvg) {
             midLine /= maxPolls;
+            chinLine /= maxPolls;
+
             calcAvg = true;
           }
 
           if (calcAvg) {
-            if (landmarks[31].x < midLine - 10) {
+            if (landmarks[31].x < midLine - 30) {
               lookLeft = true;
             }
-            if (landmarks[31].x > midLine + 10) {
+
+            if (landmarks[31].x > midLine + 30) {
               lookRight = true;
             }
+
+            if (landmarks[9].y > chinLine + 80) {
+              lookedDown = true;
+            }
+          }
+
+          if (lookedDown) {
+            alert("You looked down!");
+            lookedDown = false;
           }
 
           if (lookLeft && lookRight) {
