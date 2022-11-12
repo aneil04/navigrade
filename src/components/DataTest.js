@@ -43,7 +43,9 @@ export function DataTest() {
 
   return (
     <div>
-      <div>Speed is: {curr.speed === undefined ? "undefined" : curr.speed}</div>
+      <div>
+        Speed is: {curr.speed === undefined ? "undefined" : curr.speed * 2.237}
+      </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
