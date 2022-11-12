@@ -12,11 +12,38 @@ export function DataTest() {
 
   const [latestAcc, setLatestAcc] = useState(0);
 
+  let roadSpeedLimit = 0;
   useEffect(() => {
     const interval = setInterval(() => {
       setPrev(curr);
       navigator.geolocation.getCurrentPosition(success, error, options);
-    }, 1000);
+
+      fetch(
+        "	https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            points: [{ latitude: curr.latitude, longitude: curr.longitude }],
+            includeSpeedLimit: true,
+            includeTruckSpeedLimit: true,
+            speedUnit: "MPH",
+            travelMode: "driving",
+          }),
+        }
+      )
+        .then((response) => {
+          console.log("hi")
+          response = response.json();
+          if (response.resourceSets[0].resources[0].snappedPoints[0]) {
+            roadSpeedLimit =
+              response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
+          }
+        }).catch(err => { });
+    }, 200);
 
     return () => {
       clearInterval(interval);
@@ -34,7 +61,7 @@ export function DataTest() {
     setCurr(curr);
 
     //calc acceleration
-    setLatestAcc((curr.speed - prev.speed) / 1000);
+    setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
 
   function error(err) {
@@ -47,37 +74,11 @@ export function DataTest() {
     curr.longitude +
     "&destination=reststop";
 
-  let roadSpeedLimit = 0;
-  fetch(
-    "	https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        points: [{ latitude: curr.latitude, longitude: curr.longitude }],
-        includeSpeedLimit: true,
-        includeTruckSpeedLimit: true,
-        speedUnit: "MPH",
-        travelMode: "driving",
-      }),
-    }
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      if (response.resourceSets[0].resources[0].snappedPoints[0]) {
-        roadSpeedLimit =
-          response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
-      }
-    });
 
   return (
     <div>
       <div>
-        Speed is:{" "}
-        {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
+        Speed is {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
       </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}

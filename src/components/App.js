@@ -41,6 +41,7 @@ function App() {
 
   let lookLeft = false;
   let lookRight = false;
+
   let lookedDown = false;
 
   let midLine = 0;
@@ -117,7 +118,7 @@ function App() {
               lookRight = true;
             }
 
-            if (landmarks[9].y > chinLine + 30) {
+            if (landmarks[58].y > chinLine) {
               lookedDown = true;
             }
           }
