@@ -39,10 +39,12 @@ function App() {
       });
   };
 
+  let points = 100;
+
   let lookLeft = false;
   let lookRight = false;
 
-  let lookedDown = false;
+  let looked = true; //true -> up, false -> down
 
   let midLine = 0;
   let chinLine = 0;
@@ -118,14 +120,12 @@ function App() {
               lookRight = true;
             }
 
-            if (landmarks[58].y > chinLine) {
-              lookedDown = true;
-            }
+            looked = landmarks[58].y < chinLine + 30;
           }
 
-          if (lookedDown) {
-            alert("You looked down!");
-            lookedDown = false;
+          console.log(points);
+          if (!looked) {
+            points -= 0.5;
           }
 
           if (lookLeft && lookRight) {
