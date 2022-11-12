@@ -1,8 +1,8 @@
-import * as faceapi from 'face-api.js';
-import React from 'react';
+import * as faceapi from "face-api.js";
+import React, { useState } from "react";
 
 function App() {
-
+  const [stop, setStop] = useState(false);
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
 
@@ -13,7 +13,7 @@ function App() {
 
   React.useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = process.env.PUBLIC_URL + '/models';
+      const MODEL_URL = process.env.PUBLIC_URL + "/models";
 
       Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -21,7 +21,7 @@ function App() {
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]).then(setModelsLoaded(true));
-    }
+    };
     loadModels();
   }, []);
 
@@ -29,72 +29,149 @@ function App() {
     setCaptureVideo(true);
     navigator.mediaDevices
       .getUserMedia({ video: { width: 300 } })
-      .then(stream => {
+      .then((stream) => {
         let video = videoRef.current;
         video.srcObject = stream;
         video.play();
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("error:", err);
       });
-  }
+  };
+
+  let lookLeft = new Boolean(false);
+  let lookRight = new Boolean(false);
 
   const handleVideoOnPlay = () => {
-
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
-        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
+        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
+          videoRef.current
+        );
         const displaySize = {
           width: videoWidth,
-          height: videoHeight
-        }
+          height: videoHeight,
+        };
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        const detections = await faceapi.detectFaceLandmarks(videoRef.current, new faceapi.TinyFaceDetectorOptions());
+        // const detections = (await
+        faceapi.detectFaceLandmarks(
+          videoRef.current,
+          new faceapi.FaceLandmark68Net()
+        );
+        const detections = await faceapi
+          .detectAllFaces(
+            videoRef.current,
+            new faceapi.TinyFaceDetectorOptions()
+          )
+          .withFaceLandmarks();
+        const resizedDetections = faceapi.resizeResults(
+          detections,
+          displaySize
+        );
 
-        const leftEye = detections.getLeftEye();
+        if (resizedDetections[0]) {
+          const landmarks = resizedDetections[0].landmarks.positions;
 
-        console.log("x: " + leftEye[1].x + " y: " + leftEye[1].y)
+          const dist = landmarks[31].x - landmarks[3].x;
+          console.log(dist);
+
+          if (dist > 80) {
+            lookLeft = true;
+          }
+          if (dist < 20) {
+            lookRight = true;
+          }
+          if (lookLeft && lookRight) {
+            alert("You looked both ways!");
+            lookLeft = false;
+            lookRight = false;
+          }
+
+          canvasRef &&
+            canvasRef.current &&
+            canvasRef.current
+              .getContext("2d")
+              .clearRect(0, 0, videoWidth, videoHeight);
+          canvasRef &&
+            canvasRef.current &&
+            faceapi.draw.drawFaceLandmarks(
+              canvasRef.current,
+              resizedDetections
+            );
+        }
       }
-    }, 1000)
-  }
+    }, 100);
+  };
 
   const closeWebcam = () => {
     videoRef.current.pause();
     videoRef.current.srcObject.getTracks()[0].stop();
     setCaptureVideo(false);
-  }
+  };
 
   return (
     <div>
-      <div style={{ textAlign: 'center', padding: '10px' }}>
-        {
-          captureVideo && modelsLoaded ?
-            <button onClick={closeWebcam} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
-              Close Webcam
-            </button>
-            :
-            <button onClick={startVideo} style={{ cursor: 'pointer', backgroundColor: 'green', color: 'white', padding: '15px', fontSize: '25px', border: 'none', borderRadius: '10px' }}>
-              Open Webcam
-            </button>
-        }
+      <div style={{ textAlign: "center", padding: "10px" }}>
+        {captureVideo && modelsLoaded ? (
+          <button
+            onClick={closeWebcam}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "green",
+              color: "white",
+              padding: "15px",
+              fontSize: "25px",
+              border: "none",
+              borderRadius: "10px",
+            }}
+          >
+            Close Webcam
+          </button>
+        ) : (
+          <button
+            onClick={startVideo}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "green",
+              color: "white",
+              padding: "15px",
+              fontSize: "25px",
+              border: "none",
+              borderRadius: "10px",
+            }}
+          >
+            Open Webcam
+          </button>
+        )}
       </div>
-      {
-        captureVideo ?
-          modelsLoaded ?
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
-                <video ref={videoRef} height={videoHeight} width={videoWidth} onPlay={handleVideoOnPlay} style={{ borderRadius: '10px' }} />
-                <canvas ref={canvasRef} style={{ position: 'absolute' }} />
-              </div>
+      {captureVideo ? (
+        modelsLoaded ? (
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "10px",
+              }}
+            >
+              <video
+                ref={videoRef}
+                height={videoHeight}
+                width={videoWidth}
+                onPlay={handleVideoOnPlay}
+                style={{ borderRadius: "10px" }}
+              />
+              <canvas ref={canvasRef} style={{ position: "absolute" }} />
             </div>
-            :
-            <div>loading...</div>
-          :
-          <>
-          </>
-      }
+          </div>
+        ) : (
+          <div>loading...</div>
+        )
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
