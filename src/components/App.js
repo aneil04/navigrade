@@ -1,5 +1,5 @@
 import * as faceapi from "face-api.js";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [stop, setStop] = useState(false);
@@ -11,7 +11,7 @@ function App() {
   const videoWidth = 640;
   const canvasRef = React.useRef();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = process.env.PUBLIC_URL + "/models";
 
@@ -39,8 +39,23 @@ function App() {
       });
   };
 
-  let lookLeft = new Boolean(false);
-  let lookRight = new Boolean(false);
+  let lookLeft = false;
+  let lookRight = false;
+
+  let midLine = 0;
+  let polls = 1;
+  const maxPolls = 20;
+  let calcAvg = false;
+  let calibration = true;
+
+  function calibrate() {
+    midLine = 0;
+    polls = 1;
+    calcAvg = false;
+    calibration = true;
+
+    console.log("calibrating");
+  }
 
   const handleVideoOnPlay = () => {
     setInterval(async () => {
@@ -55,7 +70,6 @@ function App() {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        // const detections = (await
         faceapi.detectFaceLandmarks(
           videoRef.current,
           new faceapi.FaceLandmark68Net()
@@ -74,15 +88,27 @@ function App() {
         if (resizedDetections[0]) {
           const landmarks = resizedDetections[0].landmarks.positions;
 
-          const dist = landmarks[31].x - landmarks[3].x;
-          console.log(dist);
+          if (calibration) {
+            midLine += landmarks[31].x
+            polls++;
 
-          if (dist > 80) {
-            lookLeft = true;
+            if (polls > maxPolls) {
+              calibration = false;
+            }
+          } else if (!calcAvg) {
+            midLine /= maxPolls;
+            calcAvg = true;
           }
-          if (dist < 20) {
-            lookRight = true;
+
+          if (calcAvg) {
+            if (landmarks[31].x < midLine - 10) {
+              lookLeft = true;
+            }
+            if (landmarks[31].x > midLine + 10) {
+              lookRight = true;
+            }
           }
+
           if (lookLeft && lookRight) {
             alert("You looked both ways!");
             lookLeft = false;
@@ -172,6 +198,7 @@ function App() {
       ) : (
         <></>
       )}
+      <button onClick={() => { calibrate() }}>Calibrate</button>
     </div>
   );
 }
