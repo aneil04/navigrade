@@ -94,8 +94,8 @@ function App() {
           const landmarks = resizedDetections[0].landmarks.positions;
 
           if (calibration) {
-            midLine += landmarks[31].x
-            chinLine += landmarks[9].y
+            midLine += landmarks[31].x;
+            chinLine += landmarks[9].y;
             polls++;
 
             if (polls > maxPolls) {
@@ -117,7 +117,7 @@ function App() {
               lookRight = true;
             }
 
-            if (landmarks[9].y > chinLine + 80) {
+            if (landmarks[9].y > chinLine + 30) {
               lookedDown = true;
             }
           }
@@ -216,7 +216,13 @@ function App() {
       ) : (
         <></>
       )}
-      <button onClick={() => { calibrate() }}>Calibrate</button>
+      <button
+        onClick={() => {
+          calibrate();
+        }}
+      >
+        Calibrate
+      </button>
     </div>
   );
 }
