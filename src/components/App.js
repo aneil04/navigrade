@@ -51,7 +51,6 @@ function App() {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        //new faceapi.TinyFaceDetectorOptions()
         const detections = await faceapi.detectFaceLandmarks(videoRef.current );
 
         const leftEye = detections.getLeftEye();
