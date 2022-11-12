@@ -24,7 +24,7 @@ export function DataTest() {
         <div>
             <div>Speed is: {crd.speed === undefined ? "undefined" : crd.speed}</div>
             <div>Longitude: {crd.longitude} + Latitude: {crd.latitude}</div>
-            <div>+-{crd.accuracy}</div>
+            <div>+- {crd.accuracy}</div>
         </div>
     )
 }
