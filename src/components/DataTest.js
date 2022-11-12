@@ -67,11 +67,12 @@ export function DataTest() {
   )
     .then((response) => response.json())
     .then((response) => {
-      roadSpeedLimit =
-        response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
+      if (response.resourceSets[0].resources[0].snappedPoints[0]) {
+        roadSpeedLimit =
+          response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
+      }
     });
 
-  const previousSpeed = curr.speed;
   return (
     <div>
       <div>
