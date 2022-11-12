@@ -40,6 +40,7 @@ function App() {
   }
 
   const handleVideoOnPlay = () => {
+
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
         canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
@@ -50,16 +51,14 @@ function App() {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+        //new faceapi.TinyFaceDetectorOptions()
+        const detections = await faceapi.detectFaceLandmarks(videoRef.current );
 
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        const leftEye = detections.getLeftEye();
 
-        canvasRef && canvasRef.current && canvasRef.current.getContext('2d').clearRect(0, 0, videoWidth, videoHeight);
-        canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-        canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-        canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+        console.log("x: " + leftEye[1].x + " y: " + leftEye[1].y)
       }
-    }, 100)
+    }, 1000)
   }
 
   const closeWebcam = () => {
