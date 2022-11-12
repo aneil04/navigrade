@@ -41,16 +41,44 @@ export function DataTest() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
+  let roadSpeedLimit = 0;
+  fetch(
+    "	https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        points: [{ latitude: curr.latitude, longitude: curr.longitude }],
+        includeSpeedLimit: true,
+        includeTruckSpeedLimit: true,
+        speedUnit: "MPH",
+        travelMode: "driving",
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      roadSpeedLimit =
+        response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
+    });
+
+  const previousSpeed = curr.speed;
   return (
     <div>
       <div>
-        Speed is: {curr.speed === undefined ? "undefined" : curr.speed * 2.237}
+        Speed is:{" "}
+        {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
       </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
+      <div>Speed Limit: {roadSpeedLimit}</div>
+      <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
     </div>
   );
 }
