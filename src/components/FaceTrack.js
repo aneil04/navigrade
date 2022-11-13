@@ -10,6 +10,7 @@ export default function FaceTrack() {
     deductFocus,
     setAwareness,
     setSpeedPenalty,
+    reset
   } = usePenaltyContext();
 
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
@@ -35,6 +36,7 @@ export default function FaceTrack() {
   }, []);
 
   const startVideo = () => {
+    reset();
     setCaptureVideo(true);
     navigator.mediaDevices
       .getUserMedia({ video: { width: 300, height: 300 } })
