@@ -22,7 +22,7 @@ export default function Maps() {
 
   const [latestAcc, setLatestAcc] = useState(0);
 
-  const [roadSpeedLimit, setRoadSpeedLimit] = useState(20)
+  const [roadSpeedLimit, setRoadSpeedLimit] = useState(20);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,7 +48,8 @@ export default function Maps() {
         .then((response) => response.json())
         .then((response) => {
           if (
-            response.resourceSets[0].resources[0].snappedPoints[0].speedLimit != 0
+            response.resourceSets[0].resources[0].snappedPoints[0].speedLimit !=
+            0
           ) {
             setRoadSpeedLimit(
               response.resourceSets[0].resources[0].snappedPoints[0].speedLimit
@@ -56,10 +57,10 @@ export default function Maps() {
           }
         });
 
-        if (curr.speed > roadSpeedLimit + 5) {
-          console.log("speeding!")
-          setSpeed(speed => speed - 0.25)
-        }
+      if (curr.speed > roadSpeedLimit + 5) {
+        console.log("speeding!");
+        setSpeed((speed) => speed - 0.25);
+      }
     }, tInterval);
 
     return () => {
@@ -74,7 +75,7 @@ export default function Maps() {
   };
 
   function success(pos) {
-    setPrev(curr)
+    setPrev(curr);
     setCurr(pos.coords);
     setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
@@ -83,12 +84,42 @@ export default function Maps() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
-  const directionsToRestStop =
-    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
+  //Nearest rest stop from current location
+  const restStopSearch =
+    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=reststop&location=" +
     curr.latitude +
     "," +
     curr.longitude +
-    "&destination=reststop";
+    "&rankby=distance&key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30";
+  let restStopLat = "";
+  let restStopLong = "";
+  fetch(
+    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=reststop&location=37.2381027,-80.4223614&rankby=distance&key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30",
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      response = response.json();
+      restStopLat = response.results[0].viewport.northeast.lat;
+      restStopLong = response.results[0].viewport.northeast.lng;
+    })
+    .catch((err) => {});
+
+  const directionsToRestStop =
+    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30&origin=" +
+    curr.latitude +
+    "," +
+    curr.longitude +
+    "&destination=" +
+    restStopLat +
+    "," +
+    restStopLong;
+  //Nearest reststop from current location
 
   return (
     <div>
