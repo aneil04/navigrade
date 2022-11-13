@@ -4,7 +4,7 @@ import { usePenaltyContext } from "../PenaltyContext";
 const tInterval = 200;
 
 export default function Maps() {
-  const { awareness, setAwareness } = usePenaltyContext();
+  const { awareness, setAwareness, speed, setSpeed } = usePenaltyContext();
 
   const [curr, setCurr] = useState({
     speed: 0,
@@ -54,9 +54,12 @@ export default function Maps() {
               response.resourceSets[0].resources[0].snappedPoints[0].speedLimit
             );
           }
-
-          console.log(roadSpeedLimit);
         });
+
+        if (curr.speed > roadSpeedLimit + 5) {
+          console.log("speeding!")
+          setSpeed(speed => speed - 0.25)
+        }
     }, tInterval);
 
     return () => {
@@ -73,7 +76,6 @@ export default function Maps() {
   function success(pos) {
     setPrev(curr)
     setCurr(pos.coords);
-
     setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
 
