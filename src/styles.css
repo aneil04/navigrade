@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#score {
+    color: black;
+    font-weight: 600;
+    font-size: 150px;
+}
+
+.stack-element {
+    width: 330px;
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 25px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.15);
+}
+
+.stack-txt1 {
+    font-weight: 300;
+    font-size: 30px;
+    color: #1E1E1E;
+    justify-self: center;
+    float: left;
+}   
+.stack-txt2 {
+    font-weight: 300;
+    font-size: 30px;
+    color: #1E1E1E;
+    justify-self: center;
+    float: right;
+}
