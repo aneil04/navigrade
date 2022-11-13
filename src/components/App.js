@@ -25,6 +25,7 @@ function Score() {
       <div>f{focus}</div>
       <div>s{speedPenalty}</div>
       <div>a{awareness}</div>
+      <div>score: {100 - focus - speedPenalty - awareness}</div>
     </div>
   );
 }

@@ -14,18 +14,22 @@ export function PenaltyProvider({ children }) {
   const [lookedLR, setLookedLR] = useState(false);
 
   function deductSpeed() {
-    setSpeedPenalty((speedPenalty) => speedPenalty - 0.25);
-    alert("deduct");
+    setSpeedPenalty((speedPenalty) => speedPenalty + 0.25);
   }
 
   function deductFocus() {
     setFocus((focus) => focus + 0.5);
   }
 
+  function deductAwareness() {
+    setAwareness((awareness) => awareness + 5);
+  }
+
   const value = {
     speedPenalty,
     deductSpeed,
     deductFocus,
+    deductAwareness,
     focus,
     awareness,
     setAwareness,

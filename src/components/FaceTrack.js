@@ -44,7 +44,7 @@ export default function FaceTrack() {
   let lookLeft = false;
   let lookRight = false;
 
-  let lookedDown = true; //true -> up, false -> down
+  let lookedDown = false; //true -> down, false -> up
 
   let midLine = 0;
   let chinLine = 0;
@@ -52,7 +52,7 @@ export default function FaceTrack() {
   let polls = 1;
   const maxPolls = 20;
   let calcAvg = false;
-  let calibration = true;
+  let calibration = false;
 
   function calibrate() {
     midLine = 0;
@@ -122,7 +122,6 @@ export default function FaceTrack() {
           }
 
           if (lookedDown) {
-            // setFocus(focus => focus + 0.5)
             console.log("looked down");
             deductFocus();
           }

@@ -4,7 +4,7 @@ import { usePenaltyContext } from "../PenaltyContext";
 const tInterval = 200;
 
 export default function Maps() {
-  const { awareness, setAwareness, speedPenalty, setSpeedPenalty } =
+  const { awareness, setAwareness, deductSpeed, lookedLR, setLookedLR } =
     usePenaltyContext();
 
   const [curr, setCurr] = useState({
@@ -19,8 +19,26 @@ export default function Maps() {
       navigator.geolocation.getCurrentPosition(success, error, options);
 
       if (curr.speed * 2.237 > 25) {
-        console.log("speeding!");
-        setSpeedPenalty((speedPenalty) => speedPenalty - 0.25);
+        deductSpeed();
+      }
+      let stopped = true;
+      if (curr.speed === 0 && !stopped) {
+        //stopped after driving
+        stopped = true;
+        console.log("stopped");
+      } else if (stopped && curr.speed > 3) {
+        //started to drive from stop
+        if (!lookedLR) {
+          //didn't look
+          console.log("forgot to look!");
+          // setAwareness(5);
+        }
+        console.log("looked!");
+        stopped = false;
+        setLookedLR(false);
+      } else if (lookedLR && curr.speed > 3) {
+        //driving and looked, which is useless
+        setLookedLR(false);
       }
     }, tInterval);
 
@@ -59,7 +77,6 @@ export default function Maps() {
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
-      <div>+- {curr.accuracy}</div>
       <div>Speeding? {curr.speed * 2.237 > 25 ? "yes" : "no"}</div>
       <iframe
         src={directionsToRestStop}
