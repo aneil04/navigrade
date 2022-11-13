@@ -9,8 +9,7 @@ export default function Maps() {
   const {
     awareness,
     setAwareness,
-    speed,
-    setSpeed,
+    deductSpeed,
     lookedLR,
     setLookedLR,
     focus,
@@ -43,7 +42,7 @@ export default function Maps() {
       fetch(
         "https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
         {
-          method: "POST",
+          method: "GET",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -72,7 +71,8 @@ export default function Maps() {
 
       if (curr.speed * 2.237 > roadSpeedLimit + 5) {
         console.log("speeding!");
-        setSpeed((speed) => speed - 0.25);
+        // setSpeed((speed) => speed - 0.25);
+        deductSpeed();
       }
 
       if (curr.speed === 0 && !stopped) {
