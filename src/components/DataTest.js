@@ -36,13 +36,14 @@ export function DataTest() {
         }
       )
         .then((response) => {
-          console.log("hi")
+          console.log("hi");
           response = response.json();
           if (response.resourceSets[0].resources[0].snappedPoints[0]) {
             roadSpeedLimit =
               response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
           }
-        }).catch(err => { });
+        })
+        .catch((err) => {});
     }, 200);
 
     return () => {
@@ -73,20 +74,21 @@ export function DataTest() {
     "," +
     curr.longitude +
     "&destination=reststop";
-const acc = new DeviceMotionEvent("devicemotion");
-const accleration2 = acc.accelerationIncludingGravity;
+  // const acc = new DeviceMotionEvent("devicemotion");
+  // const accleration2 = acc.accelerationIncludingGravity;
 
   return (
     <div>
       <div>
-        Speed is {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
+        Speed is{" "}
+        {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
       </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
-      <div>Acceleration 2: {accleration2}</div>
+      {/* <div>Acceleration 2: {accleration2}</div> */}
       <div>Speed Limit: {roadSpeedLimit}</div>
       <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
       <iframe
