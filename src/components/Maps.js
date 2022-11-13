@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const tInterval = 200;
 
-export function DataTest() {
+export default function Maps() {
   const [curr, setCurr] = useState({
     speed: 0,
     longitude: 0,
