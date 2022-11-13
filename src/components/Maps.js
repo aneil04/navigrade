@@ -57,7 +57,7 @@ export default function Maps() {
           }
         });
 
-      if (curr.speed > roadSpeedLimit + 5) {
+      if (curr.speed * 2.237 > roadSpeedLimit + 5) {
         console.log("speeding!");
         setSpeed((speed) => speed - 0.25);
       }
@@ -77,6 +77,7 @@ export default function Maps() {
   function success(pos) {
     setPrev(curr);
     setCurr(pos.coords);
+    console.log(pos.coords);
     setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
 
@@ -106,7 +107,9 @@ export default function Maps() {
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
       <div>Speed Limit: {roadSpeedLimit}</div>
-      <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
+      <div>
+        Speeding? {curr.speed * 2.237 > roadSpeedLimit + 5 ? "yes" : "no"}
+      </div>
       <iframe
         src={directionsToRestStop}
         title="Directions to Rest Stop"
