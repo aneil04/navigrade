@@ -44,7 +44,7 @@ export default function FaceTrack() {
   let lookLeft = false;
   let lookRight = false;
 
-  let looked = true; //true -> up, false -> down
+  let lookedDown = true; //true -> up, false -> down
 
   let midLine = 0;
   let chinLine = 0;
@@ -108,26 +108,29 @@ export default function FaceTrack() {
           }
 
           if (calcAvg) {
-            if (landmarks[31].x < midLine - 30) {
+            if (landmarks[31].x < midLine - 32) {
+              console.log("looked left");
               lookLeft = true;
             }
 
-            if (landmarks[31].x > midLine + 30) {
+            if (landmarks[31].x > midLine + 32) {
+              console.log("looked right");
               lookRight = true;
             }
 
-            looked = landmarks[58].y < chinLine + 30;
+            lookedDown = landmarks[58].y < chinLine + 30;
           }
 
-          if (!looked) {
+          if (!lookedDown) {
             // setFocus(focus => focus + 0.5)
             deductFocus();
           }
 
           if (lookLeft && lookRight) {
+            console.log("looked both ways");
             lookLeft = false;
             lookRight = false;
-            setLookedLR(true)
+            setLookedLR(true);
           }
 
           canvasRef &&
