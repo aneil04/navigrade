@@ -108,12 +108,12 @@ export default function FaceTrack() {
           }
 
           if (calcAvg) {
-            if (landmarks[31].x < midLine - 32) {
+            if (landmarks[31].x < midLine - 30) {
               console.log("looked left");
               lookLeft = true;
             }
 
-            if (landmarks[31].x > midLine + 32) {
+            if (landmarks[31].x > midLine + 30) {
               console.log("looked right");
               lookRight = true;
             }

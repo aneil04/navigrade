@@ -4,8 +4,7 @@ import { usePenaltyContext } from "../PenaltyContext";
 const tInterval = 200;
 
 export default function Maps() {
-  const [directionsToRestStop, setDirectionsToRestStop] = useState("");
-  const { awareness, setAwareness, deductSpeed, lookedLR, setLookedLR, focus } =
+  const { awareness, setAwareness, speedPenalty, setSpeedPenalty } =
     usePenaltyContext();
 
   const [curr, setCurr] = useState({
@@ -15,65 +14,53 @@ export default function Maps() {
     accuracy: 0,
   });
 
-  let stopped = true;
-
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(function (pos) {
-        setCurr(pos.coords);
-      });
-    }
+    const interval = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(success, error, options);
 
-    if (curr.speed * 2.237 > 3) {
-      console.log("speeding!");
-      deductSpeed();
-    }
-
-    if (curr.speed === 0 && !stopped) {
-      //stopped after driving
-      stopped = true;
-      console.log("stopped");
-    } else if (stopped && curr.speed > 3) {
-      //started to drive from stop
-      if (!lookedLR) {
-        //didn't look
-        console.log("forgot to look!");
-        setAwareness(5);
+      if (curr.speed * 2.237 > 25) {
+        console.log("speeding!");
+        setSpeedPenalty((speedPenalty) => speedPenalty - 0.25);
       }
-      console.log("looked!");
-      stopped = false;
-      setLookedLR(false);
-    } else if (lookedLR && curr.speed > 3) {
-      //driving and looked, which is useless
-      setLookedLR(false);
-    }
+    }, tInterval);
 
-    // if (focus > 5) {
-    //   setDirectionsToRestStop(
-    //     "https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
-    //       curr.latitude +
-    //       "," +
-    //       curr.longitude +
-    //       "&destination=reststop"
-    //   );
-    // }
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
+
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+
+  function success(pos) {
+    setCurr(pos.coords);
+  }
+
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  const directionsToRestStop =
+    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30&origin=" +
+    curr.latitude +
+    "," +
+    curr.longitude +
+    "&destination=reststop";
 
   return (
     <div>
-      <div>focus: {focus}</div>
-      <div>Speed is {curr.speed * 2.237} mph</div>
+      <div>
+        Speed is{" "}
+        {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
+      </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
-      <div>
-        Speeding?{" "}
-        {curr.speed * 2.237 > 1
-          ? () => {
-              deductSpeed();
-            }
-          : "no"}
-      </div>
+      <div>+- {curr.accuracy}</div>
+      <div>Speeding? {curr.speed * 2.237 > 25 ? "yes" : "no"}</div>
       <iframe
         src={directionsToRestStop}
         title="Directions to Rest Stop"
