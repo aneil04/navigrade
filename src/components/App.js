@@ -78,10 +78,6 @@ function App() {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        faceapi.detectFaceLandmarks(
-          videoRef.current,
-          new faceapi.FaceLandmark68Net()
-        );
         const detections = await faceapi
           .detectAllFaces(
             videoRef.current,
