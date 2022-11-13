@@ -118,11 +118,12 @@ export default function FaceTrack() {
               lookRight = true;
             }
 
-            lookedDown = landmarks[58].y < chinLine + 30;
+            lookedDown = landmarks[58].y > chinLine;
           }
 
-          if (!lookedDown) {
+          if (lookedDown) {
             // setFocus(focus => focus + 0.5)
+            console.log("looked down");
             deductFocus();
           }
 
