@@ -38,17 +38,19 @@ body {
 
 .stack-txt1 {
     font-weight: 300;
-    font-size: 150%;
+    font-size: 155%;
     color: #1E1E1E;
     justify-self: center; 
     float: left;
+    padding-top: 5px;
 }   
 .stack-txt2 {
     font-weight: 550;
-    font-size: 150%;
+    font-size: 155%;
     color: red;
     justify-self: center;
     float: right;
+    padding-top: 5px;
 }
 
 #container {
