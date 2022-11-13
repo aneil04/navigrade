@@ -5,14 +5,8 @@ const tInterval = 200;
 
 export default function Maps() {
   const [directionsToRestStop, setDirectionsToRestStop] = useState("");
-  const {
-    awareness,
-    setAwareness,
-    deductSpeed,
-    lookedLR,
-    setLookedLR,
-    focus,
-  } = usePenaltyContext();
+  const { awareness, setAwareness, deductSpeed, lookedLR, setLookedLR, focus } =
+    usePenaltyContext();
 
   const [curr, setCurr] = useState({
     speed: 0,
@@ -96,16 +90,19 @@ export default function Maps() {
   return (
     <div>
       <div>focus: {focus}</div>
-      <div>
-        Speed is {curr.speed * 2.237} mph
-      </div>
+      <div>Speed is {curr.speed * 2.237} mph</div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
       <div>
-        Speeding? {curr.speed * 2.237 > 20 ? "yes" : "no"}
+        Speeding?{" "}
+        {curr.speed * 2.237 > 1
+          ? () => {
+              deductSpeed();
+            }
+          : "no"}
       </div>
       <iframe
         src={directionsToRestStop}
