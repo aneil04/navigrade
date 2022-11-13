@@ -84,43 +84,16 @@ export default function Maps() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
-  //Nearest rest stop from current location
-  const restStopSearch =
-    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=reststop&location=" +
-    curr.latitude +
-    "," +
-    curr.longitude +
-    "&rankby=distance&key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30";
-  let restStopLat = "";
-  let restStopLong = "";
-  fetch(
-    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=reststop&location=37.2381027,-80.4223614&rankby=distance&key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30",
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((response) => {
-      response = response.json();
-      restStopLat = response.results[0].viewport.northeast.lat;
-      restStopLong = response.results[0].viewport.northeast.lng;
-    })
-    .catch((err) => {});
-
   const directionsToRestStop =
     "https://www.google.com/maps/embed/v1/directions?key=AIzaSyDHELU80v3hvP7to-fr5jNbNYMFL6e3f30&origin=" +
     curr.latitude +
     "," +
     curr.longitude +
-    "&destination=" +
-    restStopLat +
-    "," +
-    restStopLong;
-  //Nearest reststop from current location
+    "&destination=reststop";
 
+  if (!directionsToRestStop) {
+    alert("hi");
+  }
   return (
     <div>
       <div>
@@ -136,7 +109,7 @@ export default function Maps() {
       <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
       <iframe
         src={directionsToRestStop}
-        title="W3Schools Free Online Web Tutorials"
+        title="Directions to Rest Stop"
       ></iframe>
     </div>
   );
