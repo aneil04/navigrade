@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { usePenaltyContext } from "../PenaltyContext";
 
 const tInterval = 200;
+let ran = true;
 
 export default function Maps() {
-  const { awareness, setAwareness, speed, setSpeed } = usePenaltyContext();
-
+  const [directionsToRestStop, setDirectionsToRestStop] = useState("")
+  const { awareness, setAwareness, speed, setSpeed, lookedLR, setLookedLR, focus } = usePenaltyContext();
+  
   const [curr, setCurr] = useState({
     speed: 0,
     longitude: 0,
@@ -23,6 +25,8 @@ export default function Maps() {
   const [latestAcc, setLatestAcc] = useState(0);
 
   const [roadSpeedLimit, setRoadSpeedLimit] = useState(20)
+
+  let stopped = true;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,12 +58,37 @@ export default function Maps() {
               response.resourceSets[0].resources[0].snappedPoints[0].speedLimit
             );
           }
-        });
+        }).catch(err => { });
 
-        if (curr.speed > roadSpeedLimit + 5) {
-          console.log("speeding!")
-          setSpeed(speed => speed - 0.25)
+      if (curr.speed > roadSpeedLimit + 5) {
+        console.log("speeding!")
+        setSpeed(speed => speed - 0.25)
+      }
+
+      if (curr.speed === 0 && !stopped) { //stopped after driving
+        stopped = true;
+        console.log("stopped")
+      } else if (stopped && curr.speed > 3) { //started to drive from stop
+        if (!lookedLR) { //didn't look
+          console.log("forgot to look!")
+          setAwareness(5)
         }
+        console.log("looked!")
+        stopped = false;
+        setLookedLR(false)
+      } else if (lookedLR && curr.speed > 3) { //driving and looked, which is useless 
+        setLookedLR(false)
+      }
+
+      console.log("focus: ")
+      if (focus > 5) {
+        setDirectionsToRestStop("https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
+          curr.latitude +
+          "," +
+          curr.longitude +
+          "&destination=reststop");
+      }
+
     }, tInterval);
 
     return () => {
@@ -83,15 +112,9 @@ export default function Maps() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
-  const directionsToRestStop =
-    "https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
-    curr.latitude +
-    "," +
-    curr.longitude +
-    "&destination=reststop";
-
   return (
     <div>
+      <div>focus: {focus}</div>
       <div>
         Speed is{" "}
         {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
