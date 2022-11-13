@@ -163,8 +163,8 @@ export default function FaceTrack() {
   };
 
   return (
-    <div>
-      <div style={{ textAlign: "center", padding: "10px" }}>
+    <div style={{ textAlign: "center", padding: "10px" }}>
+      <div >
         {captureVideo && modelsLoaded ? (
           <button
             onClick={closeWebcam}
@@ -176,6 +176,7 @@ export default function FaceTrack() {
               padding: "15px",
               fontSize: "25px",
               border: "none",
+              fontWeight: 100,
             }}
           >
             END
@@ -228,9 +229,18 @@ export default function FaceTrack() {
         onClick={() => {
           calibrate();
         }}
-        style={{}}
+        style={{
+          marginTop: '10px',
+          width: "70%",
+          cursor: "pointer",
+          backgroundColor: "#48754a",
+          color: "white",
+          padding: "15px",
+          fontSize: "25px",
+          border: "none",
+        }}
       >
-        Calibrate
+        CALIBRATE
       </button>
     </div>
   );

@@ -14,6 +14,7 @@ export default function Maps() {
     speedPenalty,
     setSpeedPenalty,
     deductAwareness,
+    focus
   } = usePenaltyContext();
 
   let stopped = false;
@@ -100,12 +101,15 @@ export default function Maps() {
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
       <div>Speeding? {curr.speed * 2.237 > 25 ? "yes" : "no"}</div> */}
+      {
+        focus > 5 && <iframe
+          id="Map"
+          src={directionsToRestStop}
+          title="Directions to Rest Stop"
+          style={{ width: "100%", height: "100%" }}
+        ></iframe>
+      }
 
-      <iframe
-        src={directionsToRestStop}
-        title="Directions to Rest Stop"
-        style={{ width: "100%", height: "100%" }}
-      ></iframe>
       {/* <div>Stopped: {curr.speed === 0 ? "yes" : "no"}</div>
       <div>Looked left and right: {looked ? "yes" : "no"}</div> */}
     </div>

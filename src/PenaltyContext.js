@@ -19,6 +19,13 @@ export function PenaltyProvider({ children }) {
 
   function deductFocus() {
     setFocus((focus) => focus + 0.5);
+    // var map = document.getElementById("Map");
+    // if (focus > 5){
+    //   map.style.display = "none";
+    // }
+    // else {
+    //   map.style.display = "block";
+    // }
   }
 
   function deductAwareness() {
