@@ -9,8 +9,8 @@ export default function FaceTrack() {
   const [captureVideo, setCaptureVideo] = React.useState(false);
 
   const videoRef = React.useRef();
-  const videoHeight = 480;
-  const videoWidth = 640;
+  const videoHeight = 300;
+  const videoWidth = 300;
   const canvasRef = React.useRef();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function FaceTrack() {
   const startVideo = () => {
     setCaptureVideo(true);
     navigator.mediaDevices
-      .getUserMedia({ video: { width: 300 } })
+      .getUserMedia({ video: { width: 300, height: 300 } })
       .then((stream) => {
         let video = videoRef.current;
         video.srcObject = stream;
