@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { usePenaltyContext } from "../PenaltyContext";
 
 const tInterval = 200;
-let ran = true;
 
 export default function Maps() {
   const [directionsToRestStop, setDirectionsToRestStop] = useState("");
@@ -31,47 +30,14 @@ export default function Maps() {
 
   const [latestAcc, setLatestAcc] = useState(0);
 
-  const [roadSpeedLimit, setRoadSpeedLimit] = useState(20);
-
   let stopped = true;
 
   useEffect(() => {
     const interval = setInterval(() => {
       navigator.geolocation.getCurrentPosition(success, error, options);
 
-      fetch(
-        "https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            points: [{ latitude: curr.latitude, longitude: curr.longitude }],
-            includeSpeedLimit: true,
-            includeTruckSpeedLimit: true,
-            speedUnit: "MPH",
-            travelMode: "driving",
-          }),
-        }
-      )
-        .then((response) => response.json())
-        .then((response) => {
-          if (
-            response.resourceSets[0].resources[0].snappedPoints[0].speedLimit !=
-            0
-          ) {
-            setRoadSpeedLimit(
-              response.resourceSets[0].resources[0].snappedPoints[0].speedLimit
-            );
-          }
-        })
-        .catch((err) => {});
-
-      if (curr.speed * 2.237 > roadSpeedLimit + 5) {
+      if (curr.speed * 2.237 > 20) {
         console.log("speeding!");
-        // setSpeed((speed) => speed - 0.25);
         deductSpeed();
       }
 
@@ -94,7 +60,6 @@ export default function Maps() {
         setLookedLR(false);
       }
 
-      console.log("focus: ");
       if (focus > 5) {
         setDirectionsToRestStop(
           "https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
@@ -120,7 +85,7 @@ export default function Maps() {
   function success(pos) {
     setPrev(curr);
     setCurr(pos.coords);
-    console.log(pos.coords);
+
     setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
 
@@ -132,17 +97,15 @@ export default function Maps() {
     <div>
       <div>focus: {focus}</div>
       <div>
-        Speed is{" "}
-        {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
+        Speed is {curr.speed * 2.237} mph
       </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
       <div>+- {curr.accuracy}</div>
       <div>Acceleration: {latestAcc}</div>
-      <div>Speed Limit: {roadSpeedLimit}</div>
       <div>
-        Speeding? {curr.speed * 2.237 > roadSpeedLimit + 5 ? "yes" : "no"}
+        Speeding? {curr.speed * 2.237 > 20 ? "yes" : "no"}
       </div>
       <iframe
         src={directionsToRestStop}

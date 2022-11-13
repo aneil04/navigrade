@@ -21,6 +21,10 @@ function Score() {
     const {focus, speed, awareness} = usePenaltyContext();
 
     return (
-        <div>{100 - focus - awareness - speed}</div>
+        <div>
+            <div>f{focus}</div>
+            <div>s{speed}</div>
+            <div>a{awareness}</div>
+        </div>
     )
 }

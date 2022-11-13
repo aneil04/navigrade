@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { usePenaltyContext } from "../PenaltyContext";
 
 export default function FaceTrack() {
-  const {focus, setFocus, setLookedLR} = usePenaltyContext();
+  const { focus, setFocus, setLookedLR, deductFocus } = usePenaltyContext();
 
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
@@ -120,7 +120,8 @@ export default function FaceTrack() {
           }
 
           if (!looked) {
-            setFocus(focus => focus + 0.5)
+            // setFocus(focus => focus + 0.5)
+            deductFocus();
           }
 
           if (lookLeft && lookRight) {
@@ -197,6 +198,7 @@ export default function FaceTrack() {
               }}
             >
               <video
+                playsInline
                 ref={videoRef}
                 height={videoHeight}
                 width={videoWidth}
