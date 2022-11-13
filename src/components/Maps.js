@@ -7,7 +7,7 @@ let ran = true;
 export default function Maps() {
   const [directionsToRestStop, setDirectionsToRestStop] = useState("")
   const { awareness, setAwareness, speed, setSpeed, lookedLR, setLookedLR, focus } = usePenaltyContext();
-  
+
   const [curr, setCurr] = useState({
     speed: 0,
     longitude: 0,
@@ -24,7 +24,7 @@ export default function Maps() {
 
   const [latestAcc, setLatestAcc] = useState(0);
 
-  const [roadSpeedLimit, setRoadSpeedLimit] = useState(20)
+  const [roadSpeedLimit, setRoadSpeedLimit] = useState(20);
 
   let stopped = true;
 
@@ -52,7 +52,8 @@ export default function Maps() {
         .then((response) => response.json())
         .then((response) => {
           if (
-            response.resourceSets[0].resources[0].snappedPoints[0].speedLimit != 0
+            response.resourceSets[0].resources[0].snappedPoints[0].speedLimit !=
+            0
           ) {
             setRoadSpeedLimit(
               response.resourceSets[0].resources[0].snappedPoints[0].speedLimit
@@ -103,7 +104,7 @@ export default function Maps() {
   };
 
   function success(pos) {
-    setPrev(curr)
+    setPrev(curr);
     setCurr(pos.coords);
     setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
@@ -128,7 +129,7 @@ export default function Maps() {
       <div>Speeding? {curr.speed > roadSpeedLimit + 5 ? "yes" : "no"}</div>
       <iframe
         src={directionsToRestStop}
-        title="W3Schools Free Online Web Tutorials"
+        title="Directions to Rest Stop"
       ></iframe>
     </div>
   );
