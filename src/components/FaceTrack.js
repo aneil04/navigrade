@@ -52,7 +52,7 @@ export default function FaceTrack() {
   let polls = 1;
   const maxPolls = 20;
   let calcAvg = false;
-  let calibration = false;
+  let calibration = true;
 
   function calibrate() {
     midLine = 0;
