@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { usePenaltyContext } from "../PenaltyContext";
 
 export default function FaceTrack() {
-  const {focus, setFocus} = usePenaltyContext();
+  const {focus, setFocus, setLookedLR} = usePenaltyContext();
 
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
@@ -124,9 +124,9 @@ export default function FaceTrack() {
           }
 
           if (lookLeft && lookRight) {
-            alert("You looked both ways!");
             lookLeft = false;
             lookRight = false;
+            setLookedLR(true)
           }
 
           canvasRef &&
