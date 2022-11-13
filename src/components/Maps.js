@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { usePenaltyContext } from "../PenaltyContext";
 
 const tInterval = 200;
 
 export default function Maps() {
+  const {awareness, setAwareness} = usePenaltyContext();
+
   const [curr, setCurr] = useState({
     speed: 0,
     longitude: 0,
@@ -19,7 +22,8 @@ export default function Maps() {
 
   const [latestAcc, setLatestAcc] = useState(0);
 
-  let roadSpeedLimit = 0;
+  const [roadSpeedLimit, setRoadSpeedLimit] = useState(20)
+
   useEffect(() => {
     const interval = setInterval(() => {
       navigator.geolocation.getCurrentPosition(success, error, options);
@@ -44,11 +48,10 @@ export default function Maps() {
         .then((response) => {
           response = response.json();
           if (response.resourceSets[0].resources[0].snappedPoints[0]) {
-            roadSpeedLimit =
-              response.resourceSets[0].resources[0].snappedPoints[0].speedLimit;
+            setRoadSpeedLimit(response.resourceSets[0].resources[0].snappedPoints[0].speedLimit);
           }
         })
-        .catch((err) => {});
+        .catch((err) => { });
     }, tInterval);
 
     return () => {

@@ -1,8 +1,10 @@
 import * as faceapi from "face-api.js";
 import React, { useState, useEffect } from "react";
+import { usePenaltyContext } from "../PenaltyContext";
 
 export default function FaceTrack() {
-  const [stop, setStop] = useState(false);
+  const {focus, setFocus} = usePenaltyContext();
+
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
 
@@ -38,8 +40,6 @@ export default function FaceTrack() {
         console.error("error:", err);
       });
   };
-
-  let points = 100;
 
   let lookLeft = false;
   let lookRight = false;
@@ -119,9 +119,8 @@ export default function FaceTrack() {
             looked = landmarks[58].y < chinLine + 30;
           }
 
-          console.log(points);
           if (!looked) {
-            points -= 0.5;
+            setFocus(focus => focus + 0.5)
           }
 
           if (lookLeft && lookRight) {
