@@ -1,14 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap');
 
 body {
+    padding: 0;
+    margin: "auto";
     font-family: 'Montserrat', sans-serif;
 }
-
+#title {
+    color: black;
+    font-weight: 600;
+    font-size: 250%;
+    width: 55%;
+    margin: auto;
+}
 #score {
     color: black;
     font-weight: 600;
-    font-size: 150px;
-    width: 50%;
+    font-size: 600%;
+    width: 45%;
     margin: auto;
 }
 
@@ -18,7 +26,8 @@ body {
 }
 
 .stack-element {
-    width: 330px;
+    width: 80%;
+    margin: auto;
     height: 40px;
     padding: 10px 20px 10px 20px;
     margin-bottom: 25px;
@@ -28,15 +37,15 @@ body {
 
 .stack-txt1 {
     font-weight: 300;
-    font-size: 30px;
+    font-size: 150%;
     color: #1E1E1E;
-    justify-self: center;
+    justify-self: center; 
     float: left;
 }   
 .stack-txt2 {
-    font-weight: 300;
-    font-size: 30px;
-    color: #1E1E1E;
+    font-weight: 550;
+    font-size: 150%;
+    color: red;
     justify-self: center;
     float: right;
 }

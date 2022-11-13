@@ -92,20 +92,22 @@ export default function Maps() {
 
   return (
     <div>
-      <div>
+      {/* <div>
         Speed is{" "}
         {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
       </div>
       <div>
         Coordinates: {curr.latitude}, {curr.longitude}
       </div>
-      <div>Speeding? {curr.speed * 2.237 > 25 ? "yes" : "no"}</div>
+      <div>Speeding? {curr.speed * 2.237 > 25 ? "yes" : "no"}</div> */}
+
       <iframe
         src={directionsToRestStop}
         title="Directions to Rest Stop"
+        style={{ width: "100%", height: "100%" }}
       ></iframe>
-      <div>Stopped: {curr.speed === 0 ? "yes" : "no"}</div>
-      <div>Looked left and right: {looked ? "yes" : "no"}</div>
+      {/* <div>Stopped: {curr.speed === 0 ? "yes" : "no"}</div>
+      <div>Looked left and right: {looked ? "yes" : "no"}</div> */}
     </div>
   );
 }

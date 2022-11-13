@@ -3,7 +3,14 @@ import React, { useState, useEffect } from "react";
 import { usePenaltyContext } from "../PenaltyContext";
 
 export default function FaceTrack() {
-  const { focus, setFocus, setLookedLR, deductFocus } = usePenaltyContext();
+  const {
+    focus,
+    setFocus,
+    setLookedLR,
+    deductFocus,
+    setAwareness,
+    setSpeedPenalty,
+  } = usePenaltyContext();
 
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
@@ -162,31 +169,31 @@ export default function FaceTrack() {
           <button
             onClick={closeWebcam}
             style={{
+              width: "70%",
               cursor: "pointer",
-              backgroundColor: "green",
+              backgroundColor: "#6b1919",
               color: "white",
               padding: "15px",
               fontSize: "25px",
               border: "none",
-              borderRadius: "10px",
             }}
           >
-            Close Webcam
+            END
           </button>
         ) : (
           <button
             onClick={startVideo}
             style={{
+              width: "70%",
               cursor: "pointer",
-              backgroundColor: "green",
+              backgroundColor: "#48754a",
               color: "white",
               padding: "15px",
               fontSize: "25px",
               border: "none",
-              borderRadius: "10px",
             }}
           >
-            Open Webcam
+            START
           </button>
         )}
       </div>
@@ -206,7 +213,7 @@ export default function FaceTrack() {
                 height={videoHeight}
                 width={videoWidth}
                 onPlay={handleVideoOnPlay}
-                style={{ borderRadius: "10px" }}
+                style={{ margin: "auto", borderRadius: "10px" }}
               />
               <canvas ref={canvasRef} style={{ position: "absolute" }} />
             </div>
@@ -221,6 +228,7 @@ export default function FaceTrack() {
         onClick={() => {
           calibrate();
         }}
+        style={{}}
       >
         Calibrate
       </button>
