@@ -4,7 +4,7 @@ import { usePenaltyContext } from "../PenaltyContext";
 const tInterval = 200;
 
 export default function Maps() {
-  const {awareness, setAwareness} = usePenaltyContext();
+  const { awareness, setAwareness } = usePenaltyContext();
 
   const [curr, setCurr] = useState({
     speed: 0,
@@ -29,7 +29,7 @@ export default function Maps() {
       navigator.geolocation.getCurrentPosition(success, error, options);
 
       fetch(
-        "	https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
+        "https://dev.virtualearth.net/REST/v1/Routes/SnapToRoad?key=ArB1-6SE_k8SauLXg6AH_ffgFFjaZyid7tlT9sOe08cnxyyP0aUYuKqCFyG543Tf",
         {
           method: "POST",
           headers: {
@@ -45,13 +45,18 @@ export default function Maps() {
           }),
         }
       )
+        .then((response) => response.json())
         .then((response) => {
-          response = response.json();
-          if (response.resourceSets[0].resources[0].snappedPoints[0]) {
-            setRoadSpeedLimit(response.resourceSets[0].resources[0].snappedPoints[0].speedLimit);
+          if (
+            response.resourceSets[0].resources[0].snappedPoints[0].speedLimit != 0
+          ) {
+            setRoadSpeedLimit(
+              response.resourceSets[0].resources[0].snappedPoints[0].speedLimit
+            );
           }
-        })
-        .catch((err) => { });
+
+          console.log(roadSpeedLimit);
+        });
     }, tInterval);
 
     return () => {
@@ -68,13 +73,14 @@ export default function Maps() {
   function success(pos) {
     setPrev(curr)
     setCurr(pos.coords);
-    console.log(curr.speed - prev.speed);
-    setLatestAcc((curr.speed - prev.speed) / (tInterval / 1000));
+
+    setLatestAcc((curr.speed - prev.speed) / (200 / 1000));
   }
 
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
+
   const directionsToRestStop =
     "https://www.google.com/maps/embed/v1/directions?key=AIzaSyATtYqu5IaAmRrD3nXFs5XxIeWto1Tj6uc&origin=" +
     curr.latitude +
