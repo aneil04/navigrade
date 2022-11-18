@@ -42,26 +42,6 @@ export default function Maps() {
   };
 
   function success(pos) {
-    // if (pos.coords.speed === 0 && !stopped) {
-    //   //stopped after driving
-    //   stopped = true;
-    //   console.log("stopped");
-    // } else if (stopped && pos.coords.speed > 0) {
-    //   //started to drive from stop
-    //   if (!looked) {
-    //     //didn't look
-    //     console.log("forgot to look!");
-    //     deductAwareness();
-    //     // setAwareness(5);
-    //   }
-    //   console.log("looked!");
-    //   stopped = false;
-    //   looked = false;
-    // } else if (looked && !stopped) {
-    //   //driving and looked, which is useless
-    //   looked = false;
-    // }
-
     if (pos.coords.speed === 0 && !stop) {
       stop = true;
       looked = false;
@@ -93,14 +73,6 @@ export default function Maps() {
 
   return (
     <div>
-      {/* <div>
-        Speed is{" "}
-        {curr.speed === undefined ? "undefined" : curr.speed * 2.237 + "mph"}
-      </div>
-      <div>
-        Coordinates: {curr.latitude}, {curr.longitude}
-      </div>
-      <div>Speeding? {curr.speed * 2.237 > 25 ? "yes" : "no"}</div> */}
       {
         focus > 5 && <iframe
           id="Map"
@@ -109,9 +81,6 @@ export default function Maps() {
           style={{ width: "100%", height: "100%" }}
         ></iframe>
       }
-
-      {/* <div>Stopped: {curr.speed === 0 ? "yes" : "no"}</div>
-      <div>Looked left and right: {looked ? "yes" : "no"}</div> */}
     </div>
   );
 }

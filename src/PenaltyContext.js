@@ -19,17 +19,16 @@ export function PenaltyProvider({ children }) {
 
   function deductFocus() {
     setFocus((focus) => focus + 0.5);
-    // var map = document.getElementById("Map");
-    // if (focus > 5){
-    //   map.style.display = "none";
-    // }
-    // else {
-    //   map.style.display = "block";
-    // }
   }
 
   function deductAwareness() {
     setAwareness((awareness) => awareness + 5);
+  }
+
+  function reset() {
+    setFocus(0)
+    setAwareness(0)
+    setSpeedPenalty(0)
   }
 
   const value = {
@@ -42,6 +41,7 @@ export function PenaltyProvider({ children }) {
     setAwareness,
     lookedLR,
     setLookedLR,
+    reset
   };
 
   return (
