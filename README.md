@@ -1,70 +1,20 @@
-# Getting Started with Create React App
+## Inspiration
+Vehicle related deaths and accidents are on a rise, especially in Virginia. To tackle this, drivers and employers must be aware of how good their driving really is. While companies like Tesla have been working on similar programs to rate drivers, ours is easily accessible to anyone with a typical smartphone and is meant to aid the driver at all times.
+## What it does
+This webapp is able track one's quality of driving over a trip. By using data based trackers such as speed and abidance to speed limit laws, as well as face tracking functions to follow drivers' heads as they may drift slowly to sleep, or their consideration to look both ways at a stop, this app will adequately calculate and critic a driver's driving score based on a point system. The more illegal or unjust driving acts one commits, the lower their overall driving wellness score will drop. The greatest part of being able to track the driver's status' isn't data collection, but instead the ability to direct tired or unfocused drivers to a route toward a rest stop. Features like these are also implemented into the webapp, and can be impactful in saving lives.
+## How we built it
+This project blended the worlds of APIs, typical arithmetic's, and facial tracking by calling a handful of mapping APIs by Google, Bing, and other Devs, using all of these calls for data that can impact the general react project. Through the mapping APIs, values such as longitude and latitude are pulled and stored, being key figures in later functions to find values like instantaneous speed. There is also the implementation of a face-plotting API that uses points on facial structures to keep a hold on where the user's face is positioned/shaped at all times. These point values were then used to identify whether or not the user was tired (sudden jerk movements downward or prolonged downward gases), or looking both ways at stops, or focused on the road, etc. Together, all of the negative parts of a user's drive total to a score that decrements for each mistake made, based on the severity of the mistake itself. Then, these values were organized into a fully fledged webapp UI compatible with that of mobile devices through the use of Firebase. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Challenges we ran into
+As with most projects, this was one consumed by a rollercoaster of emotions. Two sleepless nights led to some pretty high high’s and some frustratingly low lows, with every third line of code presenting a new error. In every aspect of the project, we faced struggles: creating repositories, implementing API’s, debugging code, testing the project, and styling the app. Creating and managing the GitHub repo - arguably the easiest part - was notoriously difficult to manage across multiple computers and members working concurrently; forgetting to push or pull changes and rolling back would often delete and override code. The API’s we used also posed their own challenges. Using machine learning to visualize the face is challenging to consistently produce accurate results, so we had to account for errors in the measurements. Moreover, getting the real-time geolocation thousands of times over the past weekend in accidental infinite loops made us run out of our free API trails, forcing us to migrate to other APIs. Testing this app was also difficult as proper geolocation updates and speed calculations needed a car to travel, so testing was slow and cumbersome. Finally, styling the app in vanilla CSS presented the usual struggles: 45 minutes spent trying to horizontally align text, another hour trying to center a DIV, and even more time getting a responsive layout. However, throughout our struggles we learned new languages, libraries and most importantly, had fun. 
 
-## Available Scripts
+## Accomplishments that we're proud of
+Two great components of our project that we are particularly proud about implementing and getting to work are the navigation to nearest rest stop feature and the look both ways check. Both of these parts of the project were complex to work on, but also vital to improving road safety as they acted directly as two features that could aid in curbing vehicles related accidents. Coding wise, the navigation feature would kick in after the facial tracking system detects any considerable evidence of tiredness or a loss of focus. By prompting and guiding the driver to the nearest rest automatically, they are more likely to follow through and be responsible. Secondly, checking whether or not a driver looked both ways at stop was also interesting and fun to implement, as it needed to not only use a mapping API to reference the driver's speed and if they were at a stop, but also the face grid and ratios between facial features to dictate whether the user had successfully looked both ways in caution.
 
-In the project directory, you can run:
+## What we learned
+On the programing side a lot of us had to learn significantly more with how to handle React as it related to the integration of APIs. With how foreign many of these APIs already are, it was certainly a learning experience to have to constantly learn what each API call would do, and then build off these calls with our own methods to manipulate them for our needs. The process of understanding, the breaking down, and then rebuilding was one full of trial and error, but in the end has brought up our confidence when dealing with web side languages like JS and libraries like React, and also taught us not to be afraid of delving into the elaborate uses of popular APIs like Google Maps and Roads.
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## What's next for navigrade
+* Work with night vision cameras for night-time environments.
+* Collect more data points (i.e. acceleration over time, jerk, times highlighted route is missed/route is recalibrated) for more entries in the total driver's score.
+* Create an actual mobile app that can use an integrated camera and gps systems.
