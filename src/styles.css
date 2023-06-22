@@ -6,6 +6,7 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 #title {
+    text-align: center;
     color: black;
     font-weight: 600;
     font-size: 250%;
@@ -13,6 +14,7 @@ body {
     margin: auto;
 }
 #score {
+    text-align: center;
     color: black;
     font-weight: 600;
     font-size: 600%;
